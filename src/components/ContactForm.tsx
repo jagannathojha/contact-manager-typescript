@@ -31,7 +31,10 @@ const ContactForm: FC<ContactFormProps> = (props) => {
     console.log(contact);
     dispatch({
       type: "ADD_CONTACT",
-      payload: contact
+      payload: {
+        id: Date.now(),
+        ...contact
+      }
     });
   };
 
