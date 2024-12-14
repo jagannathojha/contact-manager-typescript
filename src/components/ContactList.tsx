@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Contact } from "../reducer/contactsReducer";
+import ContactItem from "./ContactItem";
 
 interface ContactListProps {
   contacts: Contact[];
@@ -19,13 +20,24 @@ const ContactList: FC<ContactListProps> = ({contacts}) => {
             </tr>
           </thead>
           <tbody>
-            {contacts.map(({id, firstName, lastName, phone }) => (
-              <tr key={id}>
-                <td>{firstName}</td>
-                <td>{lastName}</td>
-                <td>{phone}</td>
-              </tr>
-            ))}
+            {/* {contacts.map(({id, firstName, lastName, phone }) => (
+              // <tr key={id}>
+              //   <td>{firstName}</td>
+              //   <td>{lastName}</td>
+              //   <td>{phone}</td>
+              // </tr>
+              <ContactItem 
+                key={id}
+                id={id}
+                firstName={firstName}
+                lastName={lastName}
+                phone={phone}
+              />
+            ))} */}
+
+            {
+              contacts.map((props) => <ContactItem key={props.id} {...props} />)
+            }
           </tbody>
         </table>
       </div>
