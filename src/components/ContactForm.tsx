@@ -22,6 +22,8 @@ const ContactForm: FC<ContactFormProps> = ({
     phone: dataToEdit?.phone ? dataToEdit.phone : ''
   });
 
+  const [errorMsg, setErrorMsg] = useState('');
+
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setContact((preState) => {
@@ -35,6 +37,16 @@ const ContactForm: FC<ContactFormProps> = ({
   const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(contact);
+
+    const { firstName, lastName, phone } = contact;
+    if( firstName.trim() === '' || lastName.trim() === '' || phone.trim() === '') {
+      setErrorMsg('All the fields are required.');
+      return;
+    } else if(!phone.trim().match(/^\d{10}$/g)) {
+      setErrorMsg('Please enter a valid 10 digit phone number');
+      return;
+    }
+
     if(!dataToEdit) {
       dispatch({
         type: "ADD_CONTACT",
@@ -47,7 +59,8 @@ const ContactForm: FC<ContactFormProps> = ({
         firstName: "",
         lastName: "",
         phone: ""
-      })
+      });
+      setErrorMsg('');
     } else {
       dispatch({
         type: "UPDATE_CONTACT",
@@ -66,6 +79,7 @@ const ContactForm: FC<ContactFormProps> = ({
 
   return(
     <Form onSubmit={handleOnSubmit} className="contact-form">
+      {errorMsg && <p className="errorMsg">{errorMsg}</p>}
       <Form.Group controlId="firstName">
         <Form.Label>First Name</Form.Label>
         <Form.Control
