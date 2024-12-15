@@ -1,12 +1,14 @@
 import { FC } from "react";
-import { Contact } from "../reducer/contactsReducer";
+import { Action, Contact } from "../reducer/contactsReducer";
 import ContactItem from "./ContactItem";
 
 interface ContactListProps {
   contacts: Contact[];
+  handleEdit: (id: number) => void;
+  dispatch: React.Dispatch<Action>;
 }
 
-const ContactList: FC<ContactListProps> = ({contacts}) => {
+const ContactList: FC<ContactListProps> = ({contacts, handleEdit, dispatch}) => {
   return (
     <div className="contacts-list">
       <h3 className="contacts-list-title">List of Contacts</h3>
@@ -17,6 +19,8 @@ const ContactList: FC<ContactListProps> = ({contacts}) => {
               <th>First Name</th>
               <th>Last Name</th>
               <th>Phone Name</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -36,7 +40,14 @@ const ContactList: FC<ContactListProps> = ({contacts}) => {
             ))} */}
 
             {
-              contacts.map((props) => <ContactItem key={props.id} {...props} />)
+              contacts.map((contact) => (
+                <ContactItem 
+                  key={contact.id} 
+                  {...contact}
+                  handleEdit={handleEdit}
+                  dispatch={dispatch}
+                />
+              ))
             }
           </tbody>
         </table>
